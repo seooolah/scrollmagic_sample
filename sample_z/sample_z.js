@@ -18,7 +18,7 @@ const scrollerSmoother = ScrollSmoother.create({
 
 const tl = gsap.timeline({
   scrollTrigger: {
-      trigger: 'ul.accordions',
+      trigger: 'ul',
       pin: true,
       start: 'top top',
       end: 'bottom top',
@@ -26,16 +26,28 @@ const tl = gsap.timeline({
       ease: 'linear',
     }
 })
-tl.to('ul.accordions > li > .accordion .text', {
+// tl.to('li > .text', {
+//   height: 0,
+//   paddingBottom: 0,
+//   opacity: 0,
+//   stagger: 0.5,
+// })
+// tl.to('li', {
+//   marginBottom: -15,
+//   stagger: 0.5,
+// }, '<')
+
+tl.to('li:not(:last-child) > .text', {
   height: 0,
   paddingBottom: 0,
   opacity: 0,
   stagger: 0.5,
-})
-tl.to('ul.accordions > li > .accordion', {
+});
+
+tl.to('li:not(:last-child)', {
   marginBottom: -15,
   stagger: 0.5,
-}, '<')
+}, '<');
 
 /*------------------------------- 참고_sample3.js -------------------------------*/ 
 // sample3.js 
@@ -128,42 +140,44 @@ const sync = (event) => {
 //   },
 // })
 
-ctrl.on('change', sync)
+// ctrl.on('change', sync)
 
 // backfill the scroll functionality with GSAP
 if (
-  !CSS.supports('(animation-timeline: scroll()) and (animation-range: 0% 100%)')
+  CSS.supports('(animation-timeline: scroll()) and (animation-range: 0% 100%)')
 ) {
   gsap.registerPlugin(ScrollTrigger)
 
   // animate the items with GSAP if there's no CSS support
-  items = gsap.utils.toArray('ul.accordions li')
-console.log(items.length)
+  items = gsap.utils.toArray('ul li')
   gsap.set(items, { opacity: (i) => (i !== 0 ? 0.2 : 1) })
 
-  const dimmer = gsap
-    .timeline()
-    .to(items.slice(1), {
-      opacity: 1,
-      stagger: 0.5,
-    })
-    .to(
-      items.slice(0, items.length - 1),
-      {
-        opacity: 0.2,
-        stagger: 0.5,
-      },
-      0
-    )
+const dimmer = gsap.timeline();
 
-  dimmerScrub = ScrollTrigger.create({
-    trigger: items[0],
-    endTrigger: items[items.length - 1],
+items.forEach((item, index) => {
+  ScrollTrigger.create({
+    trigger: item,
     start: 'center center',
     end: 'center center',
-    animation: dimmer,
-    scrub: 0.2,
-  })
+    onEnter: () => {
+      items.forEach((el, i) => gsap.to(el, { opacity: i === index ? 1 : 0.2, overwrite: 'auto', duration: 0.3, immediateRender: true}));
+      console.log('onEnter', index, item); // 현재 요소 index와 DOM 요소
+    },
+    onEnterBack: () => {
+      items.forEach((el, i) => gsap.to(el, { opacity: i === index ? 1 : 0.2, overwrite: 'auto', duration: 0.3, immediateRender: true}));
+      console.log('onEnterBack', index, item); // 뒤로 스크롤했을 때
+    },
+  });
+});
+
+dimmerScrub = ScrollTrigger.create({
+  trigger: items[0],
+  endTrigger: items[items.length - 1],
+  start: 'top center',
+  end: 'bottom center',
+  animation: dimmer,
+  scrub: 0.2,
+});
 
   // register scrollbar changer
   const scroller = gsap.timeline().fromTo(

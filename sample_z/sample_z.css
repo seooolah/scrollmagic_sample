@@ -14,10 +14,10 @@
   line-height: 1.4;
   overflow: hidden;
   padding-bottom: 20px;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 1);
 }
 
-ul.accordions {
+ul {
   display: flex;
   flex-direction: column;
   /* align-items: center; */
@@ -32,16 +32,16 @@ ul.accordions {
   margin-bottom: 40px;
   box-shadow: 0 30px 30px -10px rgba(0, 0, 0, .3);
   }
-  .accordions li:nth-child(1) .accordion { 
+  .accordions li:nth-child(1){ 
     --bg: linear-gradient(200deg, rgb(242, 136, 133) 13.57%, rgb(233, 79, 102) 98.38%);
   }
-    .accordions li:nth-child(2) .accordion { 
+    .accordions li:nth-child(2){ 
     --bg: linear-gradient(200deg, rgb(101, 187, 118) 13.57%, rgb(70, 111, 171) 98.38%);
   }
-    .accordions li:nth-child(3) .accordion { 
+    .accordions li:nth-child(3){ 
     --bg: linear-gradient(200deg, rgb(242, 136, 133) 13.57%, rgb(233, 79, 102) 98.38%);
   }
-    .accordions li:nth-child(4) .accordion { 
+    .accordions li:nth-child(4){ 
     --bg: linear-gradient(200deg, #c215d1 13.57%, #9813a1 98.38%);
   }
 
@@ -110,7 +110,7 @@ ul.accordions {
       animation-timeline: --list;
     }
 
-    [data-sync-scrollbar='true'][data-animate='true'] ul.accordions {
+    [data-sync-scrollbar='true'][data-animate='true'] ul {
       view-timeline: --list;
     }
   }
@@ -155,7 +155,7 @@ ul.accordions {
     }
   }
 
-  ul.accordions {
+  ul {
     --step: calc((var(--end) - var(--start)) / (var(--count) - 1));
   }
 
@@ -166,20 +166,22 @@ ul.accordions {
   }
 
   @supports (animation-timeline: scroll()) and (animation-range: 0% 100%) {
-    [data-animate='true'] li .accordion {
+    [data-animate='true'] li {
       opacity: 0.2;
-      animation-name: brighten;
+      /* animation-name: brighten;
       animation-fill-mode: both;
       animation-timing-function: linear;
       animation-range: cover calc(50% - 1lh) calc(50% + 1lh);
-      animation-timeline: view();
+      animation-timeline: view(); */
+      animation: none !important;
+      z-index: 1;
     }
 
-    [data-animate='true'] li .accordion:first-of-type {
+    [data-animate='true'] li:first-of-type {
       --start-opacity: 1;
     }
 
-    [data-animate='true'] li .accordion:last-of-type {
+    [data-animate='true'] li:last-of-type {
       --brightness: 1;
       --end-opacity: 1;
     }
@@ -202,7 +204,7 @@ ul.accordions {
 /* ----------------- stick layer ----------------- */
 @layer stick {
   .section:first-of-type {
-    --font-level: 6;
+    --font-level: 5;
     display: flex;
     line-height: 1.25;
     width: 100%;
@@ -230,7 +232,7 @@ ul.accordions {
     height: fit-content;
     font-weight: 600;
   }
-  ul.accordions {
+  ul {
     font-weight: 600;
     padding-inline: 0;
     margin: 0;
@@ -275,7 +277,7 @@ ul.accordions {
 
   h1 {
     --font-size-min: 24;
-    --font-level: 6;
+    --font-level: 5;
     text-wrap: pretty;
     line-height: 1.5;
     margin: 0;
