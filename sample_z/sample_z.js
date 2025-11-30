@@ -157,8 +157,8 @@ const dimmer = gsap.timeline();
 items.forEach((item, index) => {
   ScrollTrigger.create({
     trigger: item,
-    start: 'center center',
-    end: 'center center',
+    start: 'top center',
+    end: 'bottom center',
     onEnter: () => {
       items.forEach((el, i) => gsap.to(el, { opacity: i === index ? 1 : 0.2, overwrite: 'auto', duration: 0.3, immediateRender: true}));
       console.log('onEnter', index, item); // 현재 요소 index와 DOM 요소
@@ -170,14 +170,15 @@ items.forEach((item, index) => {
   });
 });
 
-dimmerScrub = ScrollTrigger.create({
-  trigger: items[0],
-  endTrigger: items[items.length - 1],
-  start: 'top center',
-  end: 'bottom center',
-  animation: dimmer,
-  scrub: 0.2,
-});
+// 중복코드
+// dimmerScrub = ScrollTrigger.create({
+//   trigger: items[0],
+//   endTrigger: items[items.length - 1],
+//   start: 'top center',
+//   end: 'bottom center',
+//   animation: dimmer,
+//   scrub: 0.2,
+// });
 
   // register scrollbar changer
   const scroller = gsap.timeline().fromTo(
